@@ -42,21 +42,21 @@ def framing_and_windowing(path,frame_size,overlap_size,window_type):
     plt.plot(timeVec,data)
 
     # framing with overlapping
-    FrameSizeSampels = round(frame_size * samplerate)
+    FrameSizeSampels = round(frame_size * samplerate)    # Frame size by samples
     OverlapSizeSamples = round(overlap_size * samplerate)
     shift = round((frame_size-overlap_size)*samplerate)
     nframes = math.ceil((len(data)-FrameSizeSampels) / shift)
-    frames =np.zeros((nframes,FrameSizeSampels))
-    for i in range(0,nframes):
-        start = i * shift#OverlapSizeSamples
+    frames =np.zeros((nframes,FrameSizeSampels))     # frames 2d array each row considered as frame 
+    for i in range(0,nframes):  
+        start = i * shift   
         end = start + FrameSizeSampels
-        if FrameSizeSampels > len(data[start:end]):
+        if FrameSizeSampels > len(data[start:end]):  # for the last frame if it unequal to the frame size 
             arr = data[start:].copy()
             arr.resize(FrameSizeSampels)  #padding
             frames[i] = arr
         else:
             frames[i] = data[start:end]
-    vector = frames.flatten()
+    vector = frames.flatten()   #flatten the 2d array to 1d to plot it 
     if window_type == "rectangular":
         energyVec = energy(frames)
         zerocrossingVec = zeroCrossing(frames)
